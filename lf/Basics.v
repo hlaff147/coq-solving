@@ -872,7 +872,7 @@ Proof. simpl. reflexivity.  Qed.
 Definition ltb (n m : nat) : bool :=
   match m with
   | 0 => false
-  | S m' => negb (leb m' n)
+  | S m' =>  (leb m' n)
   end.
 
 Notation "x <? y" := (ltb x y) (at level 70) : nat_scope.
@@ -1201,7 +1201,7 @@ Proof.
     inverse. *)
 
 Theorem negb_involutive : forall b : bool,
-  negb (negb b) = b.
+   negb (negb b) = b.
 Proof.
   intros b. destruct b eqn:E.
   - reflexivity.
