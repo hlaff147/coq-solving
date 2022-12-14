@@ -515,10 +515,20 @@ Proof.
     want to define and prove a "helper" theorem to be used
     in the proof of this one. Hint: what is [n * (1 + k)]? *)
 
+Theorem mult_m_Sn : forall m n : nat,
+ m * (S n) = m + (m * n).
+Proof.
+  induction m as [| m'].
+    - intros n. simpl. reflexivity.
+    - intros n. simpl. rewrite -> IHm'. rewrite -> plus_swap. reflexivity.  Qed.
+
 Theorem mult_comm : forall m n : nat,
   m * n = n * m.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+  - simpl. intros n. rewrite -> mult_0_r. reflexivity.
+  - simpl. intros n. rewrite -> mult_m_Sn. rewrite -> IHn'. simpl. reflexivity. 
+Qed.
 (** [] *)
 
 (** **** Exercise: 3 stars, standard, optional (more_exercises) 
@@ -536,31 +546,48 @@ Check leb.
 Theorem leb_refl : forall n:nat,
   true = (n <=? n).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+  
+Qed.
 
 Theorem zero_nbeq_S : forall n:nat,
   0 =? (S n) = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 
 Theorem andb_false_r : forall b : bool,
   andb b false = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intro n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 
 Theorem plus_ble_compat_l : forall n m p : nat,
   n <=? m = true -> (p + n) <=? (p + m) = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction p as [| p'].
+     - intros H. simpl. rewrite -> H. reflexivity.
+    - intros H. simpl. rewrite -> IHp'. reflexivity. rewrite -> H. reflexivity.
+Qed.
 
 Theorem S_nbeq_0 : forall n:nat,
   (S n) =? 0 = false.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. simpl. reflexivity.
+Qed.
 
 Theorem mult_1_l : forall n:nat, 1 * n = n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite <- plus_n_O. reflexivity.
+Qed.
 
 Theorem all3_spec : forall b c : bool,
     orb
@@ -569,17 +596,28 @@ Theorem all3_spec : forall b c : bool,
                (negb c))
   = true.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros b c. destruct b.
+  - simpl. destruct c.
+    -- simpl. reflexivity.
+    -- simpl. reflexivity.
+  - simpl. reflexivity.
+Qed.
 
 Theorem mult_plus_distr_r : forall n m p : nat,
   (n + m) * p = (n * p) + (m * p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite IHn'. rewrite -> plus_assoc. reflexivity.
+Qed.
 
 Theorem mult_assoc : forall n m p : nat,
   n * (m * p) = (n * m) * p.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite -> mult_plus_distr_r. rewrite -> IHn'. reflexivity.
+ Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (eqb_refl)  *)
