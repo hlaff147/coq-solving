@@ -210,18 +210,29 @@ Proof.
 
 Theorem plus_n_Sm : forall n m : nat,
   S (n + m) = n + (S m).
+
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+Qed.
 
 Theorem plus_comm : forall n m : nat,
   n + m = m + n.
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m. induction m as [| m' IHm'].
+    - simpl. rewrite -> plus_n_O. reflexivity.
+    - simpl. rewrite <- IHm'. rewrite <- plus_n_Sm. reflexivity.
+Qed.
 
 Theorem plus_assoc : forall n m p : nat,
   n + (m + p) = (n + m) + p.
+
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite -> IHn'. reflexivity.
+ Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard (double_plus) 
@@ -238,7 +249,10 @@ Fixpoint double (n:nat) :=
 
 Lemma double_plus : forall n, double n = n + n .
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - simpl. rewrite -> IHn'. rewrite -> plus_n_Sm. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 2 stars, standard, optional (evenb_S) 
@@ -252,8 +266,12 @@ Proof.
 
 Theorem evenb_S : forall n : nat,
   evenb (S n) = negb (evenb n).
+  
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n. induction n as [| n' IHn'].
+  - simpl. reflexivity.
+  - rewrite -> IHn'. simpl. rewrite -> negb_involutive. reflexivity.
+Qed.
 (** [] *)
 
 (** **** Exercise: 1 star, standard, optional (destruct_induction) 
@@ -489,7 +507,9 @@ Definition manual_grade_for_plus_comm_informal : option (nat*string) := None.
 Theorem plus_swap : forall n m p : nat,
   n + (m + p) = m + (n + p).
 Proof.
-  (* FILL IN HERE *) Admitted.
+  intros n m p. rewrite -> plus_assoc. assert (H: n + m = m + n).
+    - rewrite <- plus_comm. reflexivity.
+    - rewrite -> H. rewrite -> plus_assoc. reflexivity.  Qed.
 
 (** Now prove commutativity of multiplication.  You will probably
     want to define and prove a "helper" theorem to be used
